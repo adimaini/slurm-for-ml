@@ -1,31 +1,30 @@
-#!/bin/bash
+#!/bin/sh
 
-set -e
+set -xe
 
-TRAIN_PATH="data/cmu/train.csv"
-TEST_PATH="data/cmu/test.csv"
-DEV_PATH="data/cmu/dev.csv"
-ALPHABET_PATH="data/alphabet.txt"
-SCORER_PATH="data/kenlm.scorer"
-# VOCAB_PATH = "data/vocab-4500.txt"
-# BINARY_PATH = "data/lm.binary"
+_train_path="data/cmu/train.csv"
+_test_path="data/cmu/test.csv"
+_dev_path="data/cmu/dev.csv"
+_alphabet_path="data/alphabet.txt"
+_scorer_path="data/kenlm.scorer"
 
 dataset="haitian_creole"
 
 # Create a fresh file
 > ${dataset}_jobs.txt
 
-for dropout in 0.15 0.25
+for _dropout in 0.15 0.25
 do 
-    for neurons in 100 500 1024 
+    for _neurons in 100 1024 2048
     do
-        for learning_rate in 0.0001 0.001 0.005 
+        for _learning_rate in 0.0001 0.001 
         do
-            output_folder=data/${dataset}/${dropout}_${neurons}_${learning_rate}
-            command_to_pass="DeepSpeech.py --noshow_progressbar --train_files ${TRAIN_PATH} --test_files ${TEST_PATH} --dev_files ${DEV_PATH} "
-            command_to_pass+="--alphabet_config_path ${ALPHABET_PATH} --train_batch_size 40 --dev_batch_size 40 --test_batch_size 40 "
-            command_to_pass+="--n_hidden ${neurons} --early_stop True --export_dir ${output_folder} --epochs 600 --learning_rate ${learning_rate} "
-            command_to_pass+="--dropout_rate ${dropout} --checkpoint_dir ${output_folder} --scorer_path ${SCORER_PATH} --ignore_longer_outputs_than_inputs True --export_tflite" 
+            output_folder=data/${dataset}/${_dropout}_${_neurons}_${_learning_rate}
+            command_to_pass="DeepSpeech.py  --train_files ${_train_path} --test_files ${_test_path} --dev_files ${_dev_path} "
+            command_to_pass+="--alphabet_config_path ${_alphabet_path} --train_batch_size 40 --dev_batch_size 40 --test_batch_size 40 "
+            command_to_pass+="--n_hidden ${_neurons} --early_stop True --export_dir ${output_folder} --epochs 500 --learning_rate ${_learning_rate} "
+            command_to_pass+="--dropout_rate ${_dropout} --checkpoint_dir ${output_folder} --scorer_path ${_scorer_path} "
+            command_to_pass+="--export_tflite True"
             echo ${command_to_pass} >> ${dataset}_jobs.txt
             
         done
