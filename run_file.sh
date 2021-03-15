@@ -3,7 +3,7 @@
 # Expects to be in the same folder as generic.sh
 
 # Edit this if you want more or fewer jobs in parallel
-jobs_in_parallel=9
+jobs_in_parallel=10
 
 if [ ! -f "$1" ]
 then
