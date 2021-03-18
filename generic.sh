@@ -3,7 +3,7 @@
 # This is a generic running script. It can run in two configurations:
 # Single job mode: pass the python arguments to this script
 # Batch job mode: pass a file with first the job tag and second the commands per line
-#SBATCH --time 24:00:00
+#SBATCH --time 100:00:00
 #SBATCH -e testing%j.err
 #SBATCH -p large-gpu,small-gpu -N 2
 

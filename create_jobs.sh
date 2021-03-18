@@ -13,11 +13,11 @@ dataset="haitian_creole"
 # Create a fresh file
 > ${dataset}_jobs.txt
 
-for _dropout in 0.15 0.25
+for _dropout in 0.15 0.25 0.30 0.35 0.40
 do 
-    for _neurons in 100 1024 2048
+    for _neurons in 100 1024 1500 2048
     do
-        for _learning_rate in 0.0001 0.001 
+        for _learning_rate in 0.0001 0.001 0.005 0.00005
         do
             output_folder=data/${dataset}/${_dropout}_${_neurons}_${_learning_rate}
             command_to_pass="DeepSpeech.py  --train_files ${_train_path} --test_files ${_test_path} --dev_files ${_dev_path} "
